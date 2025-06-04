@@ -11,8 +11,9 @@ if "show_modal" not in st.session_state:
     st.session_state.show_modal = False
 if "just_selected_model" not in st.session_state:
     st.session_state.just_selected_model = False
-
-st.session_state.query = ""
+if "query" not in st.session_state:
+    st.session_state.query = ""
+user_input = ""
 
 def open_modal():
     st.session_state.show_modal = True
@@ -36,46 +37,10 @@ with col2:
     st.button(f"{st.session_state.selected_model} ▼", on_click=toggle_model_dropdown, use_container_width=True)
 with col3:
     user_input = st.text_input(" ", placeholder="Ask something...", label_visibility="collapsed",key="query")
+    # st.session_state.query = user_input
 
 with col4:
     submit = st.button("✈️", use_container_width=True)
-    # query = st.session_state.query.strip()
-    # if query:
-    #     # Enabled submit button with styles
-    #     submit = st.button("✈️", use_container_width=True)
-    #     st.markdown("""
-    #         <style>
-    #         div.stButton > button {
-    #             background-color: #0059f7 !important;
-    #             color: white !important;
-    #             border-radius: 8px;
-    #             font-weight: 600;
-    #             border: none;
-    #             cursor: pointer !important;
-    #             transition: background-color 0.2s ease;
-    #         }
-    #         div.stButton > button:hover {
-    #             background-color: #0043c1 !important;
-    #         }
-    #         </style>
-    #     """, unsafe_allow_html=True)
-    # else:
-    #     # Disabled-looking button as a non-clickable div
-    #     st.markdown("""
-    #         <div style="
-    #             background-color: white;
-    #             color: grey;
-    #             border-radius: 8px;
-    #             padding: 0.5em 0;
-    #             border: 1px solid #ccc;
-    #             cursor: not-allowed;
-    #             text-align: center;
-    #             font-weight: 600;
-    #             width: 100%;
-    #             user-select: none;
-    #         ">✈️</div>
-    #     """, unsafe_allow_html=True)
-    #     submit = False
 if st.session_state.show_modal:
     uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True)    
     if uploaded_files:
@@ -100,10 +65,10 @@ if st.session_state.just_selected_model:
     st.rerun()
 
 if submit:
-    if st.session_state.query == "":
+    if user_input == "":
         st.error("Empty query")
     else:
-        st.write(f"🔍submitted")
-        time.sleep(2)
+        st.success(f"🔍submitted")
+    time.sleep(2)
     close_modal()
 
